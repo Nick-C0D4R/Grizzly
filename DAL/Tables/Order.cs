@@ -13,11 +13,15 @@ namespace DAL.Tables
         [Key]
         public int Id { get; set; }
 
-        //[ForeignKey("FK_OrderOffice")]
+        [ForeignKey("Office")]
         public int OfficeId { get; set; }
 
         public DateTime OrderDate { get; set; }
 
-        public ICollection<Cart> Carts { get; set; } = new HashSet<Cart>();
+        [ForeignKey("Cart")]
+        public int CartId { get; set; }
+
+        public virtual Cart Cart { get; set; }
+        public virtual FarmacyOffice Office { get; set; }
     }
 }

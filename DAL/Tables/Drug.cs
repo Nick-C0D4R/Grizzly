@@ -17,7 +17,7 @@ namespace DAL.Tables
         public int Quantity { get; set; }
         public decimal Price { get; set; }
 
-        //[ForeignKey("FK_DrugProducer")]
+        [ForeignKey("Producer")]
         public int ProducerId { get; set; }
 
         public virtual Producer Producer { get; set; }

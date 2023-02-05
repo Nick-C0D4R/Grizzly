@@ -17,11 +17,11 @@ namespace DAL.Tables
 
         public DateTime OrderDate { get; set; }
 
-        //[ForeignKey("FK_CartDrug")]
-        public int DrugId { get; set; }
+        //[ForeignKey("Order")]
+        //public int OrderId { get; set; }
 
 
-        public virtual Drug Drug { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual ICollection<Drug> Drugs { get; set; } = new HashSet<Drug>();
+        //public virtual Order Order { get; set; }
     }
 }

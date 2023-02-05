@@ -15,7 +15,7 @@ namespace DAL.Tables
         public string UserName { get; set; }
         public string UserSurname { get; set; }
 
-        //[ForeignKey("FK_UserRole")]
+        [ForeignKey("Role")]
         public int RoleId { get; set; }
         public string Login { get; set; }
         public string PhoneNumber { get; set; }

@@ -58,6 +58,10 @@
     <Compile Include="Migrations\202302012318487_Init.designer.cs">
       <DependentUpon>202302012318487_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202302052242553_AddForeignKeys.cs" />
+    <Compile Include="Migrations\202302052242553_AddForeignKeys.designer.cs">
+      <DependentUpon>202302052242553_AddForeignKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\FarmacyOfficeRepository.cs" />
@@ -77,6 +81,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202302012318487_Init.resx">
       <DependentUpon>202302012318487_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302052242553_AddForeignKeys.resx">
+      <DependentUpon>202302052242553_AddForeignKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
