@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO
 {
-    internal class ProducerDTO
+    public class ProducerDTO
     {
+        public int Id { get; set; }
+        public string ProducerName { get; set; }
+
+        public override string ToString()
+        {
+            return ProducerName;
+        }
     }
 }
