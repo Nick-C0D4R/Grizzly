@@ -9,6 +9,12 @@ namespace BLL.DTO
     //DTO - Data Transfer Object
     public class RoleDTO
     {
+        public int Id { get; set; }
         public string RoleName { get; set; }
+
+        public override string ToString()
+        {
+            return RoleName;
+        }
     }
 }
