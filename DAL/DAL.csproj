@@ -64,8 +64,6 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\FarmacyOfficeRepository.cs" />
-    <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Tables\Cart.cs" />
     <Compile Include="Tables\Drug.cs" />
     <Compile Include="Tables\FarmacyOffice.cs" />
