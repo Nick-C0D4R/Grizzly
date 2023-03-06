@@ -5,23 +5,23 @@ using System.Data.Entity.Migrations;
 
 namespace DAL.Repositories
 {
-    public class CartRepository
+    public class CartRepository : IContextRepository<Cart>
     {
         private FarmacyContext _context;
 
         public CartRepository(FarmacyContext context) => _context = context;
 
-        public IEnumerable<Cart> GetCarts() => _context.Carts;
+        public IEnumerable<Cart> GetAll() => _context.Carts;
 
-        public Cart GetCart(int id) => _context.Carts.Find(id);
+        public Cart Get(int id) => _context.Carts.Find(id);
 
-        public void AddUpdateCart(Cart cart)
+        public void AddUpdate(Cart cart)
         {
             _context.Carts.AddOrUpdate(cart);
             _context.SaveChanges();
         }
 
-        public void RemoveUpdateCart(Cart cart)
+        public void Remove(Cart cart)
         {
             _context.Carts.Remove(cart);
             _context.SaveChanges();

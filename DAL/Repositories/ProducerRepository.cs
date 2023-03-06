@@ -5,7 +5,7 @@ using System.Data.Entity.Migrations;
 
 namespace DAL.Repositories
 {
-    public class ProducerRepository
+    public class ProducerRepository : IContextRepository<Producer>
     {
         private FarmacyContext _context;
         public ProducerRepository(FarmacyContext context)
@@ -13,17 +13,17 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public IEnumerable<Producer> GetProducers() => _context.Producers;
+        public IEnumerable<Producer> GetAll() => _context.Producers;
 
-        public Producer GetProducer(int id) => _context.Producers.Find(id);
+        public Producer Get(int id) => _context.Producers.Find(id);
 
-        public void AddUpdateProducer(Producer producer)
+        public void AddUpdate(Producer producer)
         {
             _context.Producers.AddOrUpdate(producer);
             _context.SaveChanges();
         }
 
-        public void RemoveProducer(Producer producer)
+        public void Remove(Producer producer)
         {
             _context.Producers.Remove(producer);
             _context.SaveChanges();

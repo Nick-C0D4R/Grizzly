@@ -5,7 +5,7 @@ using System.Data.Entity.Migrations;
 
 namespace DAL.Repositories
 {
-    public class FarmacyOfficeRepository
+    public class FarmacyOfficeRepository : IContextRepository<FarmacyOffice>
     {
         private FarmacyContext _context;
 
@@ -14,17 +14,17 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public IEnumerable<FarmacyOffice> GetOffices() => _context.FarmacyOffices;
+        public IEnumerable<FarmacyOffice> GetAll() => _context.FarmacyOffices;
 
-        public FarmacyOffice GetOffice(int id) => _context.FarmacyOffices.Find(id);
+        public FarmacyOffice Get(int id) => _context.FarmacyOffices.Find(id);
 
-        public void AddUpdateFarmacy(FarmacyOffice farmacy)
+        public void AddUpdate(FarmacyOffice farmacy)
         {
             _context.FarmacyOffices.AddOrUpdate(farmacy);
             _context.SaveChanges();
         }
 
-        public void RemoveFarmacy(FarmacyOffice farmacy)
+        public void Remove(FarmacyOffice farmacy)
         {
             _context.FarmacyOffices.Remove(farmacy);
             _context.SaveChanges();

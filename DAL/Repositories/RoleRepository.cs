@@ -5,23 +5,23 @@ using System.Data.Entity.Migrations;
 
 namespace DAL.Repositories
 {
-    public class RoleRepository
+    public class RoleRepository : IContextRepository<Role>
     {
         private FarmacyContext _context;
 
         public RoleRepository(FarmacyContext context) => _context = context;
 
-        public IEnumerable<Role> GetRoles() => _context.Roles;
+        public IEnumerable<Role> GetAll() => _context.Roles;
 
-        public Role GetRole(int id) => _context.Roles.Find(id);
+        public Role Get(int id) => _context.Roles.Find(id);
 
-        public void AddUpdateRole(Role role)
+        public void AddUpdate(Role role)
         {
             _context.Roles.AddOrUpdate(role);
             _context.SaveChanges();
         }
 
-        public void RemoveRole(Role role)
+        public void Remove(Role role)
         {
             _context.Roles.Remove(role);
             _context.SaveChanges();
