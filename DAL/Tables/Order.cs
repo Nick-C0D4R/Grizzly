@@ -8,20 +8,24 @@ using System.Threading.Tasks;
 
 namespace DAL.Tables
 {
-    public class Order
+    public class Order : IContextTable
     {
         [Key]
         public int Id { get; set; }
 
+        public DateTime OrderDate { get; set; }
+
+        #region Roreign Keys
         [ForeignKey("Office")]
         public int OfficeId { get; set; }
 
-        public DateTime OrderDate { get; set; }
-
         [ForeignKey("Cart")]
         public int CartId { get; set; }
+        #endregion
 
+        #region Virtual Properties
         public virtual Cart Cart { get; set; }
         public virtual FarmacyOffice Office { get; set; }
+        #endregion 
     }
 }

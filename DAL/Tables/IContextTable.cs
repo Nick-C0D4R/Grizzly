@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Tables
 {
-    public class Producer : IContextTable
+    public interface IContextTable
     {
         [Key]
-        public int Id { get; set; }
-        public string ProducerName { get; set; }
-
-        public virtual ICollection<Drug> Drugs { get; set; } = new HashSet<Drug>();
+        int Id { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Tables
 {
-    public class Role
+    public class Role : IContextTable
     {
         [Key]
         public int Id { get; set; }

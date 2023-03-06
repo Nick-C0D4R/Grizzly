@@ -62,11 +62,28 @@
     <Compile Include="Migrations\202302052242553_AddForeignKeys.designer.cs">
       <DependentUpon>202302052242553_AddForeignKeys.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202303061257079_AddIContextTable.cs" />
+    <Compile Include="Migrations\202303061257079_AddIContextTable.designer.cs">
+      <DependentUpon>202303061257079_AddIContextTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CartRepository.cs" />
+    <Compile Include="Repositories\DrugRepository.cs" />
+    <Compile Include="Repositories\FarmacyOfficeRepository.cs" />
+    <Compile Include="Repositories\OrderRepository.cs" />
+    <Compile Include="Repositories\ProducerRepository.cs" />
+    <Compile Include="Repositories\RoleRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Tables\ActiveIngredient.cs" />
     <Compile Include="Tables\Cart.cs" />
     <Compile Include="Tables\Drug.cs" />
+    <Compile Include="Tables\DrugApplicationType.cs" />
+    <Compile Include="Tables\DrugContraIndication.cs" />
+    <Compile Include="Tables\DrugIndication.cs" />
+    <Compile Include="Tables\DrugType.cs" />
     <Compile Include="Tables\FarmacyOffice.cs" />
+    <Compile Include="Tables\IContextTable.cs" />
     <Compile Include="Tables\Order.cs" />
     <Compile Include="Tables\Producer.cs" />
     <Compile Include="Tables\Role.cs" />
@@ -82,6 +99,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202302052242553_AddForeignKeys.resx">
       <DependentUpon>202302052242553_AddForeignKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202303061257079_AddIContextTable.resx">
+      <DependentUpon>202303061257079_AddIContextTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

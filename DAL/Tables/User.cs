@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Tables
 {
-    public class User
+    public class User : IContextTable
     {
         [Key]
         public int Id { get; set; }

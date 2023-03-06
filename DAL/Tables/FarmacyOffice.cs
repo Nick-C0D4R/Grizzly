@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Tables
 {
-    public class FarmacyOffice
+    public class FarmacyOffice : IContextTable
     {
         [Key]
         public int Id { get; set; }

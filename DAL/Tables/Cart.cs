@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Tables
 {
-    public class Cart
+    public class Cart : IContextTable
     {
         [Key]
         public int Id { get; set; }
