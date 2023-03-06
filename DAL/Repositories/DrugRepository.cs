@@ -1,11 +1,7 @@
 ﻿using DAL.Context;
 using DAL.Tables;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -15,7 +11,7 @@ namespace DAL.Repositories
 
         public DrugRepository(FarmacyContext context) => _context = context;
 
-        public IEnumerable<Drug> GetDrugs() => _context.Drugs.ToList();
+        public IEnumerable<Drug> GetDrugs() => _context.Drugs;
 
         public Drug GetDrug(int id) => _context.Drugs.Find(id);
 

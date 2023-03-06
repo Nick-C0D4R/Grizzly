@@ -1,11 +1,7 @@
 ﻿using DAL.Context;
 using DAL.Tables;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -17,7 +13,7 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public IEnumerable<Producer> GetProducers() => _context.Producers.ToList();
+        public IEnumerable<Producer> GetProducers() => _context.Producers;
 
         public Producer GetProducer(int id) => _context.Producers.Find(id);
 

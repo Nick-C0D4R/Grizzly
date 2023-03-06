@@ -1,11 +1,7 @@
 ﻿using DAL.Context;
 using DAL.Tables;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -18,7 +14,7 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public IEnumerable<FarmacyOffice> GetOffices() => _context.FarmacyOffices.ToList();
+        public IEnumerable<FarmacyOffice> GetOffices() => _context.FarmacyOffices;
 
         public FarmacyOffice GetOffice(int id) => _context.FarmacyOffices.Find(id);
 

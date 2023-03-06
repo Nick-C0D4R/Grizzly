@@ -1,11 +1,7 @@
 ﻿using DAL.Context;
 using DAL.Tables;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -15,7 +11,7 @@ namespace DAL.Repositories
 
         public CartRepository(FarmacyContext context) => _context = context;
 
-        public IEnumerable<Cart> GetCarts() => _context.Carts.ToList();
+        public IEnumerable<Cart> GetCarts() => _context.Carts;
 
         public Cart GetCart(int id) => _context.Carts.Find(id);
 
