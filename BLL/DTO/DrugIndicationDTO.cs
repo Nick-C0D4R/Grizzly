@@ -7,15 +7,9 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO
 {
-    //DTO - Data Transfer Object
-    public class RoleDTO : IDTOEntity
+    public class DrugIndicationDTO : IDTOEntity
     {
         public int Id { get; set; }
-        public string RoleName { get; set; }
-
-        public override string ToString()
-        {
-            return RoleName;
-        }
+        public string Indication { get; set; }
     }
 }

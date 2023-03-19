@@ -68,9 +68,15 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ActiveIngredientRepository.cs" />
+    <Compile Include="Repositories\ApplicationTypeRepository.cs" />
     <Compile Include="Repositories\CartRepository.cs" />
+    <Compile Include="Repositories\ContraIndicationRepository.cs" />
+    <Compile Include="Repositories\DrugIndicationRepository.cs" />
     <Compile Include="Repositories\DrugRepository.cs" />
+    <Compile Include="Repositories\DrugTypeRepository.cs" />
     <Compile Include="Repositories\FarmacyOfficeRepository.cs" />
+    <Compile Include="Interfaces\IContextRepository.cs" />
     <Compile Include="Repositories\OrderRepository.cs" />
     <Compile Include="Repositories\ProducerRepository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
@@ -83,7 +89,7 @@
     <Compile Include="Tables\DrugIndication.cs" />
     <Compile Include="Tables\DrugType.cs" />
     <Compile Include="Tables\FarmacyOffice.cs" />
-    <Compile Include="Tables\IContextTable.cs" />
+    <Compile Include="Interfaces\IContextTable.cs" />
     <Compile Include="Tables\Order.cs" />
     <Compile Include="Tables\Producer.cs" />
     <Compile Include="Tables\Role.cs" />
