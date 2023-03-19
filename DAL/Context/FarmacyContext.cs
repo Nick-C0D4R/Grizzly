@@ -20,6 +20,11 @@ namespace DAL.Context
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Drug> Drugs { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<DrugType> DrugTypes { get; set; }
+        public DbSet<ActiveIngredient> ActiveIngredients { get; set; }
+        public DbSet<DrugApplicationType> ApplicationTypes { get; set; }
+        public DbSet<DrugIndication> Indications { get; set; }
+        public DbSet<DrugContraIndication> ContraIndications { get; set; }
     }
 
 }
