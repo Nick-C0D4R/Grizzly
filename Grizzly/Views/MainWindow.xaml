@@ -5,5 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Grizzly.Views"
         mc:Ignorable="d"
-        Title="Grizzly" Height="450" Width="800">
+        Title="Grizzly" Height="800" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        Icon="{StaticResource logo}" ResizeMode="NoResize">
+    <Window.Background>
+        <ImageBrush ImageSource="{DynamicResource DarkBackground}"></ImageBrush>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="7.5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Style="{DynamicResource DarkThemeHeader}" Tag="Header">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Image Source="{StaticResource logo}"></Image>
+                <TextBox Grid.Column="1"
+                     VerticalAlignment="Center" HorizontalAlignment="Left"
+                     Margin="20 0 0 0" Height="30" Width="500"
+                     Style="{DynamicResource HeaderSearchBar}"
+                     Tag="SearchBar"></TextBox>
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Style="{StaticResource HeaderButton}">
+                    <Image Source="{StaticResource Cart}"/>
+                </Button>
+                <Button Grid.Column="1" Style="{StaticResource HeaderButton}">
+                    <Image Source="{StaticResource User}"/>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        </Grid>
+    </Grid>
 </Window>
