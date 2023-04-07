@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B0E96B12-6A8F-4731-BBA2-0D02674F8F35}</ProjectGuid>
+    <ProjectGuid>{8B69DB3A-4729-4E09-A98F-7492402D3B2D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Grizzly.Server</RootNamespace>
     <AssemblyName>Grizzly.Server</AssemblyName>
@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Grizzly.ConnectionManager\Grizzly.ConnectionManager.csproj">
+      <Project>{954c6855-52b9-4f17-83db-93e37216cda7}</Project>
+      <Name>Grizzly.ConnectionManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
