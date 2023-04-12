@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ProducerService : IService<ProducerDTO>
+    public class ProducerService : IDTOService<ProducerDTO>
     {
         private IMapper _mapper;
         private ProducerRepository _repository;
