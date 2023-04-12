@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Tables
 {
-    public class Order : IContextTable
+    public class Order : ContextTable
     {
         [Key]
         public int Id { get; set; }

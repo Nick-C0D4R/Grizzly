@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Tables
 {
-    public class Role : IContextTable
+    public class Role : ContextTable
     {
         [Key]
         public int Id { get; set; }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Tables
 {
-    public class Drug : IContextTable
+    public class Drug : ContextTable
     {
         [Key]
         public int Id { get; set; }

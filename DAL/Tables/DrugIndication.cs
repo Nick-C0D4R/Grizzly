@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Tables
 {
-    public class DrugIndication : IContextTable
+    public class DrugIndication : ContextTable
     {
         [Key]
         public int Id { get; set; }

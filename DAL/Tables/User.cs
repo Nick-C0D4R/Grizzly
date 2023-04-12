@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Tables
 {
-    public class User : IContextTable
+    public class User : ContextTable
     {
         [Key]
         public int Id { get; set; }
@@ -16,6 +16,7 @@ namespace DAL.Tables
         public int RoleId { get; set; }
         public string Login { get; set; }
         public string PhoneNumber { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
         public DateTime JoinDate { get; set; }
 

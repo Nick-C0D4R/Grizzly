@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Tables
 {
-    public class Cart : IContextTable
+    public class Cart : ContextTable
     {
         [Key]
         public int Id { get; set; }

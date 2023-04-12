@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Interfaces
+namespace DAL.Tables
 {
-    public interface IContextTable
+    public class ContextTable
     {
         [Key]
-        int Id { get; set; }
+        public int Id { get; set; }
     }
 }

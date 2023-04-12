@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Tables
 {
-    public class Producer : IContextTable
+    public class Producer : ContextTable
     {
         [Key]
         public int Id { get; set; }
