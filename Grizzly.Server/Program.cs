@@ -42,9 +42,6 @@ namespace Grizzly.Server
                 string str1 = ms.ReadToEnd();
                 Console.WriteLine(str1);
             }
-
-            var response = context.Response;
-            
         }
     }
 }
