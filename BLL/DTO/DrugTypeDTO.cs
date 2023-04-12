@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO
 {
-    public class ActiveIngredientDTO : IDTOEntity
+    public class DrugTypeDTO : IDTOEntity
     {
         public int Id { get; set; }
-        public string IngredientName { get; set; }
-        public short Milligrams{ get; set; }
+        public string TypeName { get; set; }
+        public ICollection<DrugDTO> Drugs { get; set; }
     }
 }
