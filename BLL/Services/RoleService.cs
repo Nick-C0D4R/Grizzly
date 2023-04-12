@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    internal class RoleService : IService<RoleDTO>
+    internal class RoleService : IDTOService<RoleDTO>
     {
         private RoleRepository _repository;
         private IMapper _mapper;
