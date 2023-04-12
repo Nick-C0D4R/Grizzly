@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    public interface IService<T> where T : IDTOEntity
+    public interface IDTOService<T> where T : IDTOEntity
     {
         IEnumerable<T> GetAll();
         T Get(int id);
