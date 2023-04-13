@@ -11,42 +11,54 @@
     <Window.Background>
         <ImageBrush ImageSource="{DynamicResource DarkBackground}"></ImageBrush>
     </Window.Background>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="7.5*"></RowDefinition>
         </Grid.RowDefinitions>
+        
+        <!--Header-->
         <Grid Grid.Row="0" Style="{DynamicResource DarkThemeHeader}" Tag="Header">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="6*"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Image Source="{StaticResource logo}"></Image>
-                <TextBox Grid.Column="1"
+            <!--Logo-->
+            <Button Style="{StaticResource LogoButton}">
+                <Image Source="{StaticResource logo}"></Image>
+            </Button>
+            <!--Searchbar-->
+            <TextBox Grid.Column="1"
                      VerticalAlignment="Center" HorizontalAlignment="Left"
                      Margin="20 0 0 0" Height="30" Width="500"
                      Style="{DynamicResource HeaderSearchBar}"
                      Tag="SearchBar"></TextBox>
+            <!--Header Buttons-->
             <Grid Grid.Column="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+                <!--Cart button-->
                 <Button Grid.Column="0" Style="{StaticResource HeaderButton}">
                     <Image Source="{StaticResource Cart}"/>
                 </Button>
+                <!--User button-->
                 <Button Grid.Column="1" Style="{StaticResource HeaderButton}">
                     <Image Source="{StaticResource User}"/>
                 </Button>
             </Grid>
         </Grid>
 
+        <!--Main Window-->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"></ColumnDefinition>
                 <ColumnDefinition Width="6*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            
         </Grid>
     </Grid>
 </Window>
