@@ -1,4 +1,6 @@
 ﻿using Grizzly.ConnectionManager;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,13 +36,21 @@ namespace Grizzly.Server
 
         static async Task GetRequest(HttpListenerContext context)
         {
+            var request = context.Request;
+            var stream = request.InputStream;
+            string method = request.HttpMethod;
             Console.WriteLine("Got request");
-
-            var str = context.Request.InputStream;
-            using (StreamReader ms = new StreamReader(str))
+            Console.WriteLine($"[HTTP METHOD] -> {method}");
+            Console.WriteLine($"[DATE] -> {DateTime.Now}");
+            Console.WriteLine($"[LOCAL] -> {request.IsLocal}");
+            Console.WriteLine($"Remote end point -> {request.RemoteEndPoint}");
+            Console.WriteLine($"Request length -> {request.ContentLength64}");
+            Console.WriteLine($"Requested Url -> {request.Url}");
+            using (StreamReader reader = new StreamReader(stream))
             {
-                string str1 = ms.ReadToEnd();
-                Console.WriteLine(str1);
+                string buf = reader.ReadToEnd();
+                var json = JObject.Parse(buf);
+                Console.WriteLine(json.ToString());
             }
         }
     }
