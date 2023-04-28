@@ -17,6 +17,14 @@
             <BitmapImage x:Key="User" UriSource="Images\user.png"></BitmapImage>
             <BitmapImage x:Key="Loupe" UriSource="Images\Loupe.png"></BitmapImage>
             <BitmapImage x:Key="DarkBackground" UriSource="Images\darkBackground.jpg"></BitmapImage>
+            <BitmapImage x:Key="UserHover" UriSource="Images\User_hover_active.png"></BitmapImage>
+            <BitmapImage x:Key="CartHover" UriSource="Images\Cart_hover.png"></BitmapImage>
+            <BitmapImage x:Key="BackwardsInactive" UriSource="Images\Backward_inactive.png"></BitmapImage>
+            <BitmapImage x:Key="BackwardsHover" UriSource="Images\Backward_hover.png"></BitmapImage>
+            <BitmapImage x:Key="BackwardsActive" UriSource="Images\Backward_active.png"></BitmapImage>
+            <BitmapImage x:Key="ForwardsInactive" UriSource="Images\Forward_inactive.png"></BitmapImage>
+            <BitmapImage x:Key="ForwardsHover" UriSource="Images\Forward_hover.png"></BitmapImage>
+            <BitmapImage x:Key="ForwardsActive" UriSource="Images\Forward_active.png"></BitmapImage>
 
             <!--Header-->
             <Style x:Key="DarkThemeHeader" TargetType="Grid">
@@ -79,8 +87,10 @@
                 </Setter>
             </Style>
             
+            
+            
             <!--Header buttons-->
-            <Style x:Key="HeaderButton" TargetType="Button">
+            <Style x:Key="HeaderButtonCart" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Margin" Value="20"/>
                 <Setter Property="BorderThickness" Value="0"/>
@@ -90,11 +100,123 @@
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="btnBorder" CornerRadius="30" BorderThickness="1" Margin="0 5">
                                 <ContentPresenter x:Name="ContentPresenter" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"
-                                                  Margin="5" RecognizesAccessKey="True" Width="25"/>
+                                                  Margin="5" RecognizesAccessKey="True"/>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="BorderBrush" Value="{DynamicResource AquamarineBrush}" TargetName="btnBorder"/>
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource CartHover}" Margin="-35"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource Cart}"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="HeaderButtonUser" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Margin" Value="20"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="btnBorder" Margin="0 5">
+                                <ContentPresenter x:Name="ContentPresenter" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"
+                                                  Margin="5" RecognizesAccessKey="True"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource UserHover}" Margin="-35"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource User}"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource UserHover}" Margin="-35"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!--Navigation arrows-->
+            <Style x:Key="HeaderBackwards" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="btnBorder" Margin="0 5">
+                                <ContentPresenter x:Name="ContentPresenter" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"
+                                                  Margin="5" RecognizesAccessKey="True"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource BackwardsHover}" Margin="-35"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource BackwardsActive}"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="HeaderForwards" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="btnBorder" Margin="0 5">
+                                <ContentPresenter x:Name="ContentPresenter" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" SnapsToDevicePixels="True"
+                                                  Margin="5" RecognizesAccessKey="True"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource ForwardsHover}" Margin="-35"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="False">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="{DynamicResource ForwardsActive}"/>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

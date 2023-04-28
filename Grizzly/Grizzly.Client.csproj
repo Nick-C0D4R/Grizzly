@@ -59,6 +59,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Pages\DrugListPage.xaml.cs">
+      <DependentUpon>DrugListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -90,6 +93,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Pages\DrugListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -113,6 +120,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\darkBackground.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Backward_active.png" />
+    <Resource Include="Images\Backward_hover.png" />
+    <Resource Include="Images\Backward_inactive.png" />
+    <Resource Include="Images\Cart_hover.png" />
+    <Resource Include="Images\Forward_active.png" />
+    <Resource Include="Images\Forward_hover.png" />
+    <Resource Include="Images\Forward_inactive.png" />
+    <Resource Include="Images\User_hover_active.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

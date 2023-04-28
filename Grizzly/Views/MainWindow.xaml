@@ -21,8 +21,9 @@
         <!--Header-->
         <Grid Grid.Row="0" Style="{DynamicResource DarkThemeHeader}" Tag="Header">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="6*"></ColumnDefinition>
+                <ColumnDefinition Width="0.75*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <!--Logo-->
@@ -35,30 +36,33 @@
                      Margin="20 0 0 0" Height="30" Width="500"
                      Style="{DynamicResource HeaderSearchBar}"
                      Tag="SearchBar"></TextBox>
-            <!--Header Buttons-->
+
+            <!--Navigation arrows-->
             <Grid Grid.Column="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+
+                <Button Style="{DynamicResource HeaderBackwards}" />
+                <Button Grid.Column="1" Style="{DynamicResource HeaderForwards}" />
+            </Grid>
+
+            <!--Header Buttons-->
+            <Grid Grid.Column="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
                 <!--Cart button-->
-                <Button Grid.Column="0" Style="{StaticResource HeaderButton}">
-                    <Image Source="{StaticResource Cart}"/>
-                </Button>
+                <Button Grid.Column="0" Style="{StaticResource HeaderButtonCart}"/>
                 <!--User button-->
-                <Button Grid.Column="1" Style="{StaticResource HeaderButton}">
-                    <Image Source="{StaticResource User}"/>
-                </Button>
+                <Button Grid.Column="1" Style="{StaticResource HeaderButtonUser}"/>
             </Grid>
         </Grid>
+        
+        <!--Content-->
+        <Frame Grid.Row="1" Source="../Pages/DrugListPage.xaml"/>
 
-        <!--Main Window-->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
-                <ColumnDefinition Width="6*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-        </Grid>
     </Grid>
 </Window>
