@@ -9,16 +9,19 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using BLL.Services;
 
 namespace Grizzly.Server
 {
-    internal class Program
+    public class Program
     {
+        private static string _apiUrl = $"{Manager.Url}{Manager.Port}/";
+
         static async Task Main(string[] args)
         {
-
+            Program program = new Program();
             HttpListener listener = new HttpListener();
-            listener.Prefixes.Add($"{Manager.Url}{Manager.Port}/");
+            listener.Prefixes.Add(_apiUrl);
             listener.Start();
             Console.WriteLine("Server started listeting port: " + Manager.Port);
 
@@ -27,7 +30,7 @@ namespace Grizzly.Server
                 await Task.Run(async () => await GetRequest(await listener.GetContextAsync()));
             }
 
-            
+
 
 
             listener.Stop();
@@ -39,6 +42,7 @@ namespace Grizzly.Server
             var request = context.Request;
             var stream = request.InputStream;
             string method = request.HttpMethod;
+            JObject json;
             Console.WriteLine("Got request");
             Console.WriteLine($"[HTTP METHOD] -> {method}");
             Console.WriteLine($"[DATE] -> {DateTime.Now}");
@@ -49,8 +53,14 @@ namespace Grizzly.Server
             using (StreamReader reader = new StreamReader(stream))
             {
                 string buf = reader.ReadToEnd();
-                var json = JObject.Parse(buf);
+                json = JObject.Parse(buf);
                 Console.WriteLine(json.ToString());
+            }
+
+            switch(method)
+            {
+                case "GET":
+                    break;
             }
         }
     }
