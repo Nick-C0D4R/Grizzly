@@ -44,7 +44,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Style="{DynamicResource HeaderBackwards}" />
+                <Button Style="{DynamicResource HeaderBackwards}"/>
                 <Button Grid.Column="1" Style="{DynamicResource HeaderForwards}" />
             </Grid>
 

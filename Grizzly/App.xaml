@@ -9,6 +9,7 @@
             <!--Brushes-->
             <SolidColorBrush x:Key="AquamarineBrush" Color="#7AE5E5" />
             <SolidColorBrush x:Key="BlackBrush" Color="#000000"/>
+            <SolidColorBrush x:Key="WhiteBrush" Color="#FFFFFF"/>
 
 
             <!--Logo & icon-->
@@ -177,14 +178,14 @@
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Content">
                                         <Setter.Value>
-                                            <Image Source="{DynamicResource BackwardsHover}" Margin="-35"/>
+                                            <Image Source="{DynamicResource BackwardsHover}" Margin="0"/>
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="False">
                                     <Setter Property="Content">
                                         <Setter.Value>
-                                            <Image Source="{DynamicResource BackwardsActive}"/>
+                                            <Image Source="{DynamicResource BackwardsActive}" Width="80"/>
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>
@@ -207,14 +208,14 @@
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Content">
                                         <Setter.Value>
-                                            <Image Source="{DynamicResource ForwardsHover}" Margin="-35"/>
+                                            <Image Source="{DynamicResource ForwardsHover}" Margin="0"/>
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="False">
                                     <Setter Property="Content">
                                         <Setter.Value>
-                                            <Image Source="{DynamicResource ForwardsActive}"/>
+                                            <Image Source="{DynamicResource ForwardsActive}" Width="80"/>
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>

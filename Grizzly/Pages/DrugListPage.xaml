@@ -9,7 +9,14 @@
       Title="DrugListPage">
     <Page.Resources>
         <ResourceDictionary>
-            <SolidColorBrush x:Key="test" Color="White" Opacity="0.5"/>
+            <SolidColorBrush x:Key="filterBackground" Color="#58585840"
+                             Opacity="0.5"/>
+
+            <Style x:Key="filterLabel" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="32"/>
+                <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}"/>
+            </Style>
+            
         </ResourceDictionary>
     </Page.Resources>
     <Page.Background>
@@ -21,23 +28,33 @@
             <ColumnDefinition Width="0.3*"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Border CornerRadius="0 0 30 0" Background="{StaticResource test}">
+        <!--Filters-->
+        <Border CornerRadius="0 15 15 0" Margin="0 0 0 150"
+                Background="{StaticResource filterBackground}"
+                Padding="30 20 0 0">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <ComboBox VerticalAlignment="Top" Margin="5 30 0 0" Width="175"
-                          HorizontalAlignment="Left"/>
-                <TextBlock Grid.Row="1">There must be list of drugs and filters</TextBlock>
+                <TextBlock Grid.Row="0" Text="Фільтр" Style="{StaticResource filterLabel}"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel>
+                        
+                    </StackPanel>
+                </ScrollViewer>
+                
+                    
+
+
+                
             </Grid>
 
         </Border>
 
-
+        <!--Container for drug list-->
+        <WrapPanel Orientation="Horizontal" Grid.Column="1">
+            
+        </WrapPanel>
     </Grid>
 </Page>
