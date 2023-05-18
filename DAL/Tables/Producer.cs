@@ -1,5 +1,4 @@
-﻿using DAL.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Tables

@@ -70,6 +70,10 @@
     <Compile Include="Migrations\202304091308424_EmailForUser.designer.cs">
       <DependentUpon>202304091308424_EmailForUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202305151319339_Update1.cs" />
+    <Compile Include="Migrations\202305151319339_Update1.designer.cs">
+      <DependentUpon>202305151319339_Update1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ActiveIngredientRepository.cs" />
@@ -93,7 +97,7 @@
     <Compile Include="Tables\DrugContraIndication.cs" />
     <Compile Include="Tables\DrugIndication.cs" />
     <Compile Include="Tables\DrugType.cs" />
-    <Compile Include="Tables\FarmacyOffice.cs" />
+    <Compile Include="Tables\PharmacyOffice.cs" />
     <Compile Include="Tables\Order.cs" />
     <Compile Include="Tables\Producer.cs" />
     <Compile Include="Tables\Role.cs" />
@@ -115,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202304091308424_EmailForUser.resx">
       <DependentUpon>202304091308424_EmailForUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305151319339_Update1.resx">
+      <DependentUpon>202305151319339_Update1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

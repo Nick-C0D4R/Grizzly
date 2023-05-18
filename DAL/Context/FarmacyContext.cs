@@ -15,7 +15,7 @@ namespace DAL.Context
 
         public DbSet<Producer> Producers { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<FarmacyOffice> FarmacyOffices { get; set; }
+        public DbSet<PharmacyOffice> FarmacyOffices { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Drug> Drugs { get; set; }

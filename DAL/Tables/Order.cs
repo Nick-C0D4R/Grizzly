@@ -22,7 +22,7 @@ namespace DAL.Tables
 
         #region Virtual Properties
         public virtual Cart Cart { get; set; }
-        public virtual FarmacyOffice Office { get; set; }
+        public virtual PharmacyOffice Office { get; set; }
         #endregion 
     }
 }

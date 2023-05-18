@@ -1,9 +1,8 @@
-﻿using DAL.Interfaces;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DAL.Tables
 {
-    public class FarmacyOffice : ContextTable
+    public class PharmacyOffice : ContextTable
     {
         [Key]
         public int Id { get; set; }
