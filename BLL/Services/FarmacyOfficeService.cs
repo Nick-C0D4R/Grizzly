@@ -18,7 +18,7 @@
             _repository = repository;
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<FarmacyOffice, FarmacyOfficeDTO>()
+                cfg.CreateMap<PharmacyOffice, FarmacyOfficeDTO>()
                 .ForMember(x => x.Id, x => x.MapFrom(p => p.Id))
                 .ForMember(x => x.FarmacyTitle, x => x.MapFrom(p => p.FarmacyTitle))
                 .ForMember(x => x.FarmacyAddress, x => x.MapFrom(p => p.FarmacyAddress));
@@ -28,7 +28,7 @@
 
         public FarmacyOfficeDTO Add(FarmacyOfficeDTO office)
         {
-            FarmacyOffice toAdd = new FarmacyOffice
+            PharmacyOffice toAdd = new PharmacyOffice
             {
                 Id = office.Id,
                 FarmacyAddress = office.FarmacyAddress,
@@ -41,7 +41,7 @@
 
         public void Delete(FarmacyOfficeDTO office)
         {
-            FarmacyOffice toDelete = _repository.Get(office.Id);
+            PharmacyOffice toDelete = _repository.Get(office.Id);
             _repository.Remove(toDelete);
         }
 
@@ -53,7 +53,7 @@
 
         public void Update(FarmacyOfficeDTO office)
         {
-            FarmacyOffice toUpdate = _repository.Get(office.Id);
+            PharmacyOffice toUpdate = _repository.Get(office.Id);
             toUpdate.FarmacyTitle = office.FarmacyTitle;
             toUpdate.FarmacyAddress = office.FarmacyAddress;
             _repository.AddUpdate(toUpdate);
