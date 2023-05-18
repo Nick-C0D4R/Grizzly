@@ -53,6 +53,17 @@ namespace Grizzly.Server.Resolver
         private IKernel AddRequestBindings(IKernel kernel)
         {
             kernel.Bind<RoleService>().To<RoleService>().InSingletonScope();
+            kernel.Bind<ActiveIngredientService>().To<ActiveIngredientService>().InSingletonScope();
+            kernel.Bind<UserService>().To<UserService>().InSingletonScope();
+            kernel.Bind<ProducerService>().To<ProducerService>().InSingletonScope();
+            kernel.Bind<OrderService>().To<OrderService>().InSingletonScope();
+            kernel.Bind<FarmacyOfficeService>().To<FarmacyOfficeService>().InSingletonScope();
+            kernel.Bind<DrugTypeService>().To<DrugTypeService>().InSingletonScope();
+            kernel.Bind<DrugService>().To<DrugService>().InSingletonScope();
+            kernel.Bind<DrugIndicationService>().To<DrugIndicationService>().InSingletonScope();
+            kernel.Bind<ContraIndicationService>().To<ContraIndicationService>().InSingletonScope();
+            kernel.Bind<CartService>().To<CartService>().InSingletonScope();
+            kernel.Bind<ApplicationTypeService>().To<ApplicationTypeService>().InSingletonScope();
             return kernel;
         }
     }

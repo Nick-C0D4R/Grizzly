@@ -3,14 +3,8 @@ using BLL.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
-
 namespace Grizzly.Server.Controllers
 {
     public class RolesController : ApiController
@@ -25,16 +19,26 @@ namespace Grizzly.Server.Controllers
         //GET: api/roles
         public async Task<JObject> Get()
         {
-            var roles = await _service.GetAllAsync();
 
+            var roles = await _service.GetAllAsync();
             JArray array = new JArray();
-            foreach (var role in roles)
+            try
             {
-                array.Add(JToken.FromObject(role));
+                foreach (var role in roles)
+                {
+                    array.Add(JToken.FromObject(role));
+                }
+                JObject result = new JObject();
+                result["Roles"] = array;
+                return result;
             }
-            JObject result = new JObject();
-            result["Roles"] = array;
-            return result;
+            catch(Exception ex)
+            {
+                string respone = @"{
+                                    Roles: []
+                                    }";
+                return JObject.Parse(respone);
+            }
         }
 
         // GET: api/roles/5

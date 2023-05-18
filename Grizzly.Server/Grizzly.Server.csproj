@@ -171,8 +171,21 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ActiveIngredientsController.cs" />
+    <Compile Include="Controllers\ApplicationsController.cs" />
+    <Compile Include="Controllers\CartsController.cs" />
+    <Compile Include="Controllers\ContraindicationsController.cs" />
+    <Compile Include="Controllers\DrugsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IndicationsController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PharmaciesController.cs" />
+    <Compile Include="Controllers\ProducersController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\TypesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -234,7 +247,20 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\ActiveIngredients\" />
+    <Folder Include="Views\Applications\" />
+    <Folder Include="Views\Carts\" />
+    <Folder Include="Views\Contraindications\" />
+    <Folder Include="Views\Drugs\" />
+    <Folder Include="Views\Indications\" />
+    <Folder Include="Views\Login\" />
+    <Folder Include="Views\Orders\" />
+    <Folder Include="Views\Pharmacies\" />
+    <Folder Include="Views\Producers\" />
+    <Folder Include="Views\Register\" />
     <Folder Include="Views\Roles\" />
+    <Folder Include="Views\Types\" />
+    <Folder Include="Views\Users\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -269,6 +295,10 @@
     <ProjectReference Include="..\BLL\BLL.csproj">
       <Project>{EFAD7CCD-4643-48F6-847A-8A93DE4376FB}</Project>
       <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Grizzly.ConnectionManager\Grizzly.ConnectionManager.csproj">
+      <Project>{954c6855-52b9-4f17-83db-93e37216cda7}</Project>
+      <Name>Grizzly.ConnectionManager</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
