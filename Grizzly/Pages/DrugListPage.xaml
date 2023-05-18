@@ -40,7 +40,13 @@
                 <TextBlock Grid.Row="0" Text="Фільтр" Style="{StaticResource filterLabel}"/>
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                     <StackPanel>
-                        
+                        <Button>
+                            <ListBox Visibility="Hidden">
+                                <ListBoxItem>AAA</ListBoxItem>
+                                <ListBoxItem>AAA</ListBoxItem>
+                                <ListBoxItem>AAA</ListBoxItem>
+                            </ListBox>
+                        </Button>
                     </StackPanel>
                 </ScrollViewer>
                 

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Grizzly.Views"
+        xmlns:viewModel="clr-namespace:Grizzly.ViewModels"
         mc:Ignorable="d"
         Title="Grizzly" Height="800" Width="1300"
         WindowStartupLocation="CenterScreen"
@@ -11,6 +12,9 @@
     <Window.Background>
         <ImageBrush ImageSource="{DynamicResource DarkBackground}"></ImageBrush>
     </Window.Background>
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -44,8 +48,10 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Style="{DynamicResource HeaderBackwards}"/>
-                <Button Grid.Column="1" Style="{DynamicResource HeaderForwards}" />
+                <Button Style="{DynamicResource HeaderBackwards}"
+                        IsEnabled="{Binding BackwardArrowEnabled}"/>
+                <Button Grid.Column="1" Style="{DynamicResource HeaderForwards}"
+                        IsEnabled="{Binding ForwardArrowEnabled}" />
             </Grid>
 
             <!--Header Buttons-->
@@ -57,12 +63,14 @@
                 <!--Cart button-->
                 <Button Grid.Column="0" Style="{StaticResource HeaderButtonCart}"/>
                 <!--User button-->
-                <Button Grid.Column="1" Style="{StaticResource HeaderButtonUser}"/>
+                <Button Grid.Column="1" Style="{StaticResource HeaderButtonUser}">
+                </Button>
+                <ListBox ItemsSource="{Binding UserMenuOptions}" FlowDirection=""></ListBox>
             </Grid>
         </Grid>
         
         <!--Content-->
-        <Frame Grid.Row="1" Source="../Pages/DrugListPage.xaml"/>
+        <Frame Grid.Row="1" Name="MainContent" Content="{Binding CurrentPage}"/>
 
     </Grid>
 </Window>
