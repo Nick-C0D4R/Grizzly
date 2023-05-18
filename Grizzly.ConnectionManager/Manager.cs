@@ -8,7 +8,6 @@ namespace Grizzly.ConnectionManager
 {
     public static class Manager
     {
-        public static string Url => "http://localhost:";
-        public static int Port => 8080;
+        public static string Url => "http://localhost:56592/";
     }
 }
