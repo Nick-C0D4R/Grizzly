@@ -17,7 +17,6 @@ namespace Grizzly.Server.Controllers
     public class UsersController : ApiController
     {
         private UserService _service;
-
         private HttpResponseMessage _message;
 
         public UsersController(UserService service)
@@ -33,7 +32,7 @@ namespace Grizzly.Server.Controllers
 
             if(users.Count() == 0)
             {
-                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
                 string json = @"{
                                     Count: 0,
                                     Users: []
@@ -58,7 +57,6 @@ namespace Grizzly.Server.Controllers
             catch(Exception ex)
             {
                 _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
-                _message.Content = new StringContent(JObject.Parse(ex.Message).ToString(), Encoding.UTF8, "application/json");
             }
             return _message;
         }
@@ -69,10 +67,11 @@ namespace Grizzly.Server.Controllers
             JObject result;
             try
             {
-                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Found);
                 var user = _service.Get(id);
                 if(user == null)
                 {
+                    _message.StatusCode = System.Net.HttpStatusCode.NotFound;
                     string json = @"{
                                         User : null
                                     }";
@@ -87,7 +86,6 @@ namespace Grizzly.Server.Controllers
             catch(Exception ex)
             {
                 _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
-                _message.Content = new StringContent(JObject.Parse(ex.Message).ToString(), Encoding.UTF8, "application/json");
             }
             return _message;
         }
@@ -97,32 +95,44 @@ namespace Grizzly.Server.Controllers
             {
                 UserDTO user = JsonConvert.DeserializeObject<UserDTO>(value.ToString());
                 user = _service.Add(user);
-                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Created);
                 JObject result = JObject.FromObject(user);
                 _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
             }
             catch(Exception ex)
             {
                 _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
-                //_message.Content = new StringContent(JObject.Parse(ex.Message).ToString(), Encoding.UTF8, "application/json");
             }
 
             return _message;
         }
         public async Task<HttpResponseMessage> Put([FromBody] JObject value)
         {
-            UserDTO user = JsonConvert.DeserializeObject<UserDTO>(value.ToString());
-            _service.Update(user);
-            _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
-            _message.Content = new StringContent(JObject.FromObject(user).ToString(), Encoding.UTF8, "application/json");
+            try
+            {
+                UserDTO user = JsonConvert.DeserializeObject<UserDTO>(value.ToString());
+                _service.Update(user);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                _message.Content = new StringContent(JObject.FromObject(user).ToString(), Encoding.UTF8, "application/json");
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
             return _message;
         }
         public async Task<HttpResponseMessage> Delete([FromBody] JObject value)
         {
-            UserDTO user = JsonConvert.DeserializeObject<UserDTO>(value.ToString());
-            _service.Delete(user);
-            _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
-            _message.Content = new StringContent("User deleted", Encoding.UTF8);
+            try
+            {
+                UserDTO user = JsonConvert.DeserializeObject<UserDTO>(value.ToString());
+                _service.Delete(user);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
             return _message;
         }
     }
