@@ -85,7 +85,6 @@ namespace Grizzly.Server.Controllers
             catch (Exception e)
             {
                 _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
-                _message.Content = new StringContent(JObject.Parse(e.Message).ToString(), Encoding.UTF8, "application/json");
             }
             return _message;
         }
