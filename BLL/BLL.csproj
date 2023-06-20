@@ -59,7 +59,7 @@
     <Compile Include="DTO\ProducerDTO.cs" />
     <Compile Include="DTO\RoleDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
-    <Compile Include="DTO\FarmacyOfficeDTO.cs" />
+    <Compile Include="DTO\PharmacyOfficeDTO.cs" />
     <Compile Include="Interfaces\IDTOEntity.cs" />
     <Compile Include="Interfaces\IDTOService.cs" />
     <Compile Include="Modules\GrizzlyModule.cs" />

@@ -3,18 +3,19 @@ using BLL.Services;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
+using System.Net.Http;
+using System.Linq;
+using System.Data.Entity.Infrastructure;
 
 namespace Grizzly.Server.Controllers
 {
-    public class OrdersController : Controller
+    public class OrdersController : ApiController
     {
         private OrderService _service;
+        private HttpResponseMessage _message;
 
         public OrdersController(OrderService service)
         {
@@ -22,66 +23,117 @@ namespace Grizzly.Server.Controllers
         }
 
         //GET: api/orders
-        public async Task<JObject> Get()
+        public async Task<HttpResponseMessage> Get()
         {
-            var orders = await _service.GetAllAsync();
-
-            JArray array = new JArray();
             try
             {
-                foreach (var order in orders)
+                var orders = await _service.GetAllAsync();
+                JArray array = new JArray();
+                JObject result;
+                
+                if(orders.Count() == 0)
                 {
-                    array.Add(JToken.FromObject(order));
-                }
-                JObject result = new JObject();
-                result["Orders"] = array;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                string respone = @"{
-                                    Orders: []
+                    _message = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                    string json = @"{
+                                        Count: 0,
+                                        Orders: []
                                     }";
-                return JObject.FromObject(respone);
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    foreach (var order in orders)
+                    {
+                        array.Add(order);
+                    }
+                    result = new JObject();
+                    result["Count"] = array.Count;
+                    result["Orders"] = array;
+                    _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
             }
+            catch(Exception ex)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
+            }
+            return _message;
         }
 
         // GET: api/pharmacies/5
-        public async Task<JObject> Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
         {
             try
             {
-                return await Task.Run(() => JObject.FromObject(_service.Get(id)));
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Found);
+                OrderDTO order = _service.Get(id);
+                JObject result;
+                
+                if(order == null)
+                {
+                    _message.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    string json = @"{
+                                        Order: null
+                                    }";
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    result = JObject.FromObject(order);
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
             }
-            catch (Exception ex)
+            catch(Exception e)
             {
-                string response = @"
-                                    {{
-                                        Status Code: 404 Not Found,
-                                        Message: Order with with id is not found
-                                    }}";
-                return JObject.FromObject(response);
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
             }
+            return _message;
         }
 
-        public async Task<JObject> Post([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Post([FromBody] JObject value)
         {
-            OrderDTO order = JsonConvert.DeserializeObject<OrderDTO>(value.ToString());
-            order = _service.Add(order);
-            return JObject.FromObject(order);
+            try
+            {
+                var order = JsonConvert.DeserializeObject<OrderDTO>(value.ToString());
+                order = _service.Add(order);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Created);
+                _message.Content = new StringContent(value.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
 
-        public async Task<JObject> Put([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Put([FromBody] JObject value)
         {
-            OrderDTO order = JsonConvert.DeserializeObject<OrderDTO>(value.ToString());
-            _service.Update(order);
-            return JObject.FromObject(order);
+            try
+            {
+                var order = JsonConvert.DeserializeObject<OrderDTO>(value.ToString());
+                _service.Update(order);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
 
-        public async Task Delete([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Delete([FromBody] JObject value)
         {
-            OrderDTO order = JsonConvert.DeserializeObject<OrderDTO>(value.ToString());
-            _service.Delete(order);
+            try
+            {
+                var order = JsonConvert.DeserializeObject<OrderDTO>(value.ToString());
+                _service.Delete(order);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
     }
 }
