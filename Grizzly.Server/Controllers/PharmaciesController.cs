@@ -8,13 +8,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
+using System.Net.Http;
+using System.Text;
 
 namespace Grizzly.Server.Controllers
 {
-    public class PharmaciesController : Controller
+    public class PharmaciesController : ApiController
     {
         private FarmacyOfficeService _service;
+        private HttpResponseMessage _message;
 
         public PharmaciesController(FarmacyOfficeService service)
         {
@@ -22,66 +24,109 @@ namespace Grizzly.Server.Controllers
         }
 
         //GET: api/pharmacies
-        public async Task<JObject> Get()
+        public async Task<HttpResponseMessage> Get()
         {
-            var pharmacies = await _service.GetAllAsync();
-
-            JArray array = new JArray();
             try
             {
-                foreach (var pharmacy in pharmacies)
+                JObject result;
+                JArray pharmacies = new JArray();
+                var offices = await _service.GetAllAsync();
+
+                if(offices.Count() == 0)
                 {
-                    array.Add(JToken.FromObject(pharmacy));
-                }
-                JObject result = new JObject();
-                result["Pharmacies"] = array;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                string respone = @"{
-                                    Pharmacies: []
+                    _message = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                    string json = @"{
+                                        Count: 0,
+                                        Offices: []
                                     }";
-                return JObject.FromObject(respone);
+                    result = JObject.Parse(json);
+                    _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+                }
             }
+            catch(Exception e)
+            {
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
 
         // GET: api/pharmacies/5
-        public async Task<JObject> Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
         {
+            JObject result;
             try
             {
-                return await Task.Run(() => JObject.FromObject(_service.Get(id)));
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Found);
+                var pharmacy = _service.Get(id);
+                if(pharmacy == null)
+                {
+                    _message.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    string json = @"{
+                                        Pharmacy: null
+                                    }";
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    result = JObject.FromObject(pharmacy);
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
             }
             catch (Exception ex)
             {
-                string response = @"
-                                    {{
-                                        Status Code: 404 Not Found,
-                                        Message: Pharmacy with with id is not found
-                                    }}";
-                return JObject.FromObject(response);
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
             }
+            return _message;
         }
 
-        public async Task<JObject> Post([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Post([FromBody] JObject value)
         {
-            FarmacyOfficeDTO farmacy = JsonConvert.DeserializeObject<FarmacyOfficeDTO>(value.ToString());
-            farmacy = _service.Add(farmacy);
-            return JObject.FromObject(farmacy);
+            try
+            {
+                PharmacyOfficeDTO pharmacy = JsonConvert.DeserializeObject<PharmacyOfficeDTO>(value.ToString());
+                pharmacy = _service.Add(pharmacy);
+                JObject result = JObject.FromObject(pharmacy);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Created);
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
 
-        public async Task<JObject> Put([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Put([FromBody] JObject value)
         {
-            FarmacyOfficeDTO farmacy = JsonConvert.DeserializeObject<FarmacyOfficeDTO>(value.ToString());
-            _service.Update(farmacy);
-            return JObject.FromObject(farmacy);
+            try
+            {
+                JObject result;
+                PharmacyOfficeDTO pharmacy = JsonConvert.DeserializeObject<PharmacyOfficeDTO>(value.ToString());
+                _service.Update(pharmacy);
+                result = JObject.FromObject(pharmacy);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
 
-        public async Task Delete([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Delete([FromBody] JObject value)
         {
-            FarmacyOfficeDTO farmacy = JsonConvert.DeserializeObject<FarmacyOfficeDTO>(value.ToString());
-            _service.Delete(farmacy);
+            try
+            {
+                PharmacyOfficeDTO pharmacy = JsonConvert.DeserializeObject<PharmacyOfficeDTO>(value.ToString());
+                _service.Delete(pharmacy);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
     }
 }
