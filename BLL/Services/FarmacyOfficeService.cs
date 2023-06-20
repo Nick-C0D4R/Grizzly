@@ -8,7 +8,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public class FarmacyOfficeService : IDTOService<FarmacyOfficeDTO>
+    public class FarmacyOfficeService : IDTOService<PharmacyOfficeDTO>
     {
         private FarmacyOfficeRepository _repository;
         private IMapper _mapper;
@@ -18,7 +18,7 @@
             _repository = repository;
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<PharmacyOffice, FarmacyOfficeDTO>()
+                cfg.CreateMap<PharmacyOffice, PharmacyOfficeDTO>()
                 .ForMember(x => x.Id, x => x.MapFrom(p => p.Id))
                 .ForMember(x => x.FarmacyTitle, x => x.MapFrom(p => p.FarmacyTitle))
                 .ForMember(x => x.FarmacyAddress, x => x.MapFrom(p => p.FarmacyAddress));
@@ -26,7 +26,7 @@
             _mapper = new Mapper(config);
         }
 
-        public FarmacyOfficeDTO Add(FarmacyOfficeDTO office)
+        public PharmacyOfficeDTO Add(PharmacyOfficeDTO office)
         {
             PharmacyOffice toAdd = new PharmacyOffice
             {
@@ -39,19 +39,19 @@
             return office;
         }
 
-        public void Delete(FarmacyOfficeDTO office)
+        public void Delete(PharmacyOfficeDTO office)
         {
             PharmacyOffice toDelete = _repository.Get(office.Id);
             _repository.Remove(toDelete);
         }
 
-        public FarmacyOfficeDTO Get(int id) => _mapper.Map<FarmacyOfficeDTO>(_repository.Get(id));
+        public PharmacyOfficeDTO Get(int id) => _mapper.Map<PharmacyOfficeDTO>(_repository.Get(id));
 
-        public IEnumerable<FarmacyOfficeDTO> GetAll() => _mapper.Map<IEnumerable<FarmacyOfficeDTO>>(_repository.GetAll());
+        public IEnumerable<PharmacyOfficeDTO> GetAll() => _mapper.Map<IEnumerable<PharmacyOfficeDTO>>(_repository.GetAll());
 
-        public async Task<IEnumerable<FarmacyOfficeDTO>> GetAllAsync()=> await Task.Run(() => GetAll());
+        public async Task<IEnumerable<PharmacyOfficeDTO>> GetAllAsync()=> await Task.Run(() => GetAll());
 
-        public void Update(FarmacyOfficeDTO office)
+        public void Update(PharmacyOfficeDTO office)
         {
             PharmacyOffice toUpdate = _repository.Get(office.Id);
             toUpdate.FarmacyTitle = office.FarmacyTitle;

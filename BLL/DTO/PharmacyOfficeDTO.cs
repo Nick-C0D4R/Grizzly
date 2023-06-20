@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO
 {
-    public class FarmacyOfficeDTO : IDTOEntity
+    public class PharmacyOfficeDTO : IDTOEntity
     {
         public int Id { get; set; }
         public string FarmacyTitle { get; set; }
