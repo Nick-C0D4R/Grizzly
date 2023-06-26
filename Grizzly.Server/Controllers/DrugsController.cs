@@ -9,12 +9,15 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Net.Http;
+using System.Text;
 
 namespace Grizzly.Server.Controllers
 {
-    public class DrugsController : Controller
+    public class DrugsController : ApiController
     {
         private DrugService _service;
+        private HttpResponseMessage _message;
 
         public DrugsController(DrugService service)
         {
@@ -22,66 +25,118 @@ namespace Grizzly.Server.Controllers
         }
 
         //GET: api/drugs
-        public async Task<JObject> Get()
+        public async Task<HttpResponseMessage> Get()
         {
-            var drugs = await _service.GetAllAsync();
-
             JArray array = new JArray();
+            JObject result;
             try
             {
-                foreach (var drug in drugs)
+                var drugs = await _service.GetAllAsync();
+                if(drugs.Count() == 0)
                 {
-                    array.Add(JToken.FromObject(drug));
-                }
-                JObject result = new JObject();
-                result["Drugs"] = array;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                string respone = @"{
-                                    Drugs: []
+                    _message = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                    string json = @"{
+                                        Count: 0,
+                                        Drugs: []
                                     }";
-                return JObject.FromObject(respone);
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                    foreach (var drug in drugs)
+                    {
+                        array.Add(drug);
+                    }
+                    result = new JObject();
+                    result["Count"] = array.Count;
+                    result["Drugs"] = array;
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
             }
+            catch(Exception ex)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
+            }
+            return _message;
         }
 
         // GET: api/drugs/5
-        public async Task<JObject> Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
+        {
+            JObject result;
+            try
+            {
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Found);
+                DrugDTO drug = _service.Get(id);
+                if(drug == null)
+                {
+                    _message.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    string json = @"{
+                                        Drug: null
+                                    }";
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    result = JObject.FromObject(drug);
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
+        }
+
+        public async Task<HttpResponseMessage> Post([FromBody] JObject value)
+        {
+            JObject result;
+            try
+            {
+                DrugDTO drug = JsonConvert.DeserializeObject<DrugDTO>(value.ToString());
+                drug = _service.Add(drug);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Created);
+                result = JObject.FromObject(drug);
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
+        }
+
+        public async Task<HttpResponseMessage> Put([FromBody] JObject value)
         {
             try
             {
-                return await Task.Run(() => JObject.FromObject(_service.Get(id)));
+                DrugDTO drug = JsonConvert.DeserializeObject<DrugDTO>(value.ToString());
+                _service.Update(drug);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                _message.Content = new StringContent(value.ToString(), Encoding.UTF8, "application/json");
             }
-            catch (Exception ex)
+            catch(Exception e)
             {
-                string response = @"
-                                    {{
-                                        Status Code: 404 Not Found,
-                                        Message: Drug with with id is not found
-                                    }}";
-                return JObject.FromObject(response);
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
             }
+            return _message;
         }
 
-        public async Task<JObject> Post([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Delete([FromBody] JObject value)
         {
-            DrugDTO drug = JsonConvert.DeserializeObject<DrugDTO>(value.ToString());
-            drug = _service.Add(drug);
-            return JObject.FromObject(drug);
-        }
-
-        public async Task<JObject> Put([FromBody] JObject value)
-        {
-            DrugDTO drug = JsonConvert.DeserializeObject<DrugDTO>(value.ToString());
-            _service.Update(drug);
-            return JObject.FromObject(drug);
-        }
-
-        public async Task Delete([FromBody] JObject value)
-        {
-            DrugDTO drug = JsonConvert.DeserializeObject<DrugDTO>(value.ToString());
-            _service.Delete(drug);
+            try
+            {
+                DrugDTO drug = JsonConvert.DeserializeObject<DrugDTO>(value.ToString());
+                _service.Delete(drug);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
     }
 }
