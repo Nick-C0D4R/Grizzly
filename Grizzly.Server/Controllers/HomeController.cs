@@ -12,7 +12,7 @@ namespace Grizzly.Server.Controllers
         {
             ViewBag.Title = "Home Page";
 
-            return View();
+            return RedirectToAction("Roles", "api");
         }
     }
 }
