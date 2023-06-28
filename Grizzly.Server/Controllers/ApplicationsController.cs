@@ -9,12 +9,15 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Net.Http;
+using System.Text;
 
 namespace Grizzly.Server.Controllers
 {
-    public class ApplicationsController : Controller
+    public class ApplicationsController : ApiController
     {
         private ApplicationTypeService _service;
+        private HttpResponseMessage _message;
 
         public ApplicationsController(ApplicationTypeService service)
         {
@@ -22,66 +25,118 @@ namespace Grizzly.Server.Controllers
         }
 
         //GET: api/applications
-        public async Task<JObject> Get()
+        public async Task<HttpResponseMessage> Get()
         {
-            var applications = await _service.GetAllAsync();
-
             JArray array = new JArray();
+            JObject result;
             try
             {
-                foreach (var application in applications)
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                var applications = await _service.GetAllAsync();
+                if (applications.Count() == 0)
                 {
-                    array.Add(JToken.FromObject(application));
-                }
-                JObject result = new JObject();
-                result["Applications"] = array;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                string respone = @"{
-                                    Applications: []
+                    _message = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                    string json = @"{
+                                        Count: 0,
+                                        Applications: []
                                     }";
-                return JObject.FromObject(respone);
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    result = new JObject();
+                    foreach (var application in applications)
+                    {
+                        array.Add(application);
+                    }
+                    result["Count"] = array.Count;
+                    result["Applications"] = array;
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
             }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
 
         // GET: api/applications/5
-        public async Task<JObject> Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
+        {
+            JObject result;
+            try
+            {
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Found);
+                var application = _service.Get(id);
+                if (application == null)
+                {
+                    _message.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    string json = @"{
+                                        Application: null
+                                    }";
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    result = JObject.FromObject(application);
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
+        }
+
+        public async Task<HttpResponseMessage> Post([FromBody] JObject value)
+        {
+            JObject result;
+            try
+            {
+                var application = JsonConvert.DeserializeObject<DrugApplicationTypeDTO>(value.ToString());
+                application = _service.Add(application);
+                result = JObject.FromObject(application);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Created);
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
+        }
+
+        public async Task<HttpResponseMessage> Put([FromBody] JObject value)
         {
             try
             {
-                return await Task.Run(() => JObject.FromObject(_service.Get(id)));
+                DrugApplicationTypeDTO application = JsonConvert.DeserializeObject<DrugApplicationTypeDTO>(value.ToString());
+                _service.Update(application);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                _message.Content = new StringContent(value.ToString(), Encoding.UTF8, "application/json");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                string response = @"
-                                    {{
-                                        Status Code: 404 Not Found,
-                                        Message: Applications type with id is not found
-                                    }}";
-                return JObject.FromObject(response);
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
             }
+            return _message;
         }
 
-        public async Task<JObject> Post([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Delete([FromBody] JObject value)
         {
-            DrugApplicationTypeDTO application = JsonConvert.DeserializeObject<DrugApplicationTypeDTO>(value.ToString());
-            application = _service.Add(application);
-            return JObject.FromObject(application);
-        }
-
-        public async Task<JObject> Put([FromBody] JObject value)
-        {
-            DrugApplicationTypeDTO application = JsonConvert.DeserializeObject<DrugApplicationTypeDTO>(value.ToString());
-            _service.Update(application);
-            return JObject.FromObject(application);
-        }
-
-        public async Task Delete([FromBody] JObject value)
-        {
-            DrugApplicationTypeDTO application = JsonConvert.DeserializeObject<DrugApplicationTypeDTO>(value.ToString());
-            _service.Delete(application);
+            try
+            {
+                DrugApplicationTypeDTO application = JsonConvert.DeserializeObject<DrugApplicationTypeDTO>(value.ToString());
+                _service.Delete(application);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
     }
 }
