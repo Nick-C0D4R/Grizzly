@@ -9,12 +9,15 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Net.Http;
+using System.Text;
 
 namespace Grizzly.Server.Controllers
 {
-    public class ActiveIngredientsController : Controller
+    public class ActiveIngredientsController : ApiController
     {
         private ActiveIngredientService _service;
+        private HttpResponseMessage _message;
 
         public ActiveIngredientsController(ActiveIngredientService service)
         {
@@ -22,66 +25,118 @@ namespace Grizzly.Server.Controllers
         }
 
         //GET: api/activeingredients
-        public async Task<JObject> Get()
+        public async Task<HttpResponseMessage> Get()
         {
-            var activeIngredients = await _service.GetAllAsync();
-
             JArray array = new JArray();
+            JObject result;
             try
             {
-                foreach (var activeIngredient in activeIngredients)
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+                var activeIngredients = await _service.GetAllAsync();
+                if (activeIngredients.Count() == 0)
                 {
-                    array.Add(JToken.FromObject(activeIngredient));
-                }
-                JObject result = new JObject();
-                result["ActiveIngredients"] = array;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                string respone = @"{
-                                    ActiveIngredients: []
+                    _message = Request.CreateResponse(System.Net.HttpStatusCode.NoContent);
+                    string json = @"{
+                                        Count: 0,
+                                        ActiveIngredients: []
                                     }";
-                return JObject.FromObject(respone);
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    result = new JObject();
+                    foreach (var ingredient in activeIngredients)
+                    {
+                        array.Add(ingredient);
+                    }
+                    result["Count"] = array.Count;
+                    result["ActiveIngredients"] = array;
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
             }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
 
         // GET: api/activeingredients/5
-        public async Task<JObject> Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
+        {
+            JObject result;
+            try
+            {
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Found);
+                var activeIngredient = _service.Get(id);
+                if (activeIngredient == null)
+                {
+                    _message.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    string json = @"{
+                                        ActiveIngredient: null
+                                    }";
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    result = JObject.FromObject(activeIngredient);
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
+        }
+
+        public async Task<HttpResponseMessage> Post([FromBody] JObject value)
+        {
+            JObject result;
+            try
+            {
+                var ingredient = JsonConvert.DeserializeObject<ActiveIngredientDTO>(value.ToString());
+                ingredient = _service.Add(ingredient);
+                result = JObject.FromObject(ingredient);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Created);
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
+        }
+
+        public async Task<HttpResponseMessage> Put([FromBody] JObject value)
         {
             try
             {
-                return await Task.Run(() => JObject.FromObject(_service.Get(id)));
+                ActiveIngredientDTO activeIngredient = JsonConvert.DeserializeObject<ActiveIngredientDTO>(value.ToString());
+                _service.Update(activeIngredient);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                _message.Content = new StringContent(value.ToString(), Encoding.UTF8, "application/json");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                string response = @"
-                                    {{
-                                        Status Code: 404 Not Found,
-                                        Message: Active ingredients with id is not found
-                                    }}";
-                return JObject.FromObject(response);
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
             }
+            return _message;
         }
 
-        public async Task<JObject> Post([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Delete([FromBody] JObject value)
         {
-            ActiveIngredientDTO activeIngredient = JsonConvert.DeserializeObject<ActiveIngredientDTO>(value.ToString());
-            activeIngredient = _service.Add(activeIngredient);
-            return JObject.FromObject(activeIngredient);
-        }
-
-        public async Task<JObject> Put([FromBody] JObject value)
-        {
-            ActiveIngredientDTO activeIngredient = JsonConvert.DeserializeObject<ActiveIngredientDTO>(value.ToString());
-            _service.Update(activeIngredient);
-            return JObject.FromObject(activeIngredient);
-        }
-
-        public async Task Delete([FromBody] JObject value)
-        {
-            ActiveIngredientDTO activeIngredient = JsonConvert.DeserializeObject<ActiveIngredientDTO>(value.ToString());
-            _service.Delete(activeIngredient);
+            try
+            {
+                ActiveIngredientDTO ingredient = JsonConvert.DeserializeObject<ActiveIngredientDTO>(value.ToString());
+                _service.Delete(ingredient);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
     }
 }
