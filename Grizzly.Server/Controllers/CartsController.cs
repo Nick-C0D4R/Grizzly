@@ -9,12 +9,15 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Net.Http;
+using System.Text;
 
 namespace Grizzly.Server.Controllers
 {
-    public class CartsController : Controller
+    public class CartsController : ApiController
     {
         private CartService _service;
+        private HttpResponseMessage _message;
 
         public CartsController(CartService service)
         {
@@ -22,66 +25,121 @@ namespace Grizzly.Server.Controllers
         }
 
         //GET: api/carts
-        public async Task<JObject> Get()
+        public async Task<HttpResponseMessage> Get()
         {
-            var carts = await _service.GetAllAsync();
-
             JArray array = new JArray();
+            JObject result;
+
             try
             {
-                foreach (var cart in carts)
+                var carts = await _service.GetAllAsync();
+
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+
+                if(carts.Count() == 0)
                 {
-                    array.Add(JToken.FromObject(cart));
-                }
-                JObject result = new JObject();
-                result["Carts"] = array;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                string respone = @"{
-                                    Carts: []
+                    _message.StatusCode = System.Net.HttpStatusCode.NoContent;
+                    string json = @"{
+                                        Count: 0,
+                                        Carts: []
                                     }";
-                return JObject.FromObject(respone);
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    foreach(var cart in carts)
+                    {
+                        array.Add(cart);
+                    }
+                    result = new JObject();
+                    result["Count"] = array.Count;
+                    result["Carts"] = array;
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "applicaion/json");
             }
+            catch(Exception ex)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
+            }
+            return _message;
         }
 
         // GET: api/contraindications/5
-        public async Task<JObject> Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
+        {
+            JObject result;
+            try
+            {
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Found);
+                var cart = _service.Get(id);
+                if(cart == null)
+                {
+                    _message.StatusCode = System.Net.HttpStatusCode.NotFound;
+                    string json = @"{
+                                        Cart: null
+                                    }";
+                    result = JObject.Parse(json);
+                }
+                else
+                {
+                    result = JObject.FromObject(cart);
+                }
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch(Exception ex)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
+            }
+            return _message;
+        }
+
+        public async Task<HttpResponseMessage> Post([FromBody] JObject value)
+        {
+            JObject result;
+            try
+            {
+                var cart = JsonConvert.DeserializeObject<CartDTO>(value.ToString());
+                cart = _service.Add(cart);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Created);
+                result = JObject.FromObject(cart);
+                _message.Content = new StringContent(result.ToString(), Encoding.UTF8, "application/json");
+            }
+            catch(Exception ex )
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, ex);
+            }
+            return _message;
+        }
+
+        public async Task<HttpResponseMessage> Put([FromBody] JObject value)
         {
             try
             {
-                return await Task.Run(() => JObject.FromObject(_service.Get(id)));
+                CartDTO cart = JsonConvert.DeserializeObject<CartDTO>(value.ToString());
+                _service.Update(cart);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.Accepted);
+                _message.Content = new StringContent(value.ToString(), Encoding.UTF8, "application/json");
             }
-            catch (Exception ex)
+            catch(Exception e)
             {
-                string response = @"
-                                    {{
-                                        Status Code: 404 Not Found,
-                                        Message: Cart with with id is not found
-                                    }}";
-                return JObject.FromObject(response);
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
             }
+            return _message;
         }
 
-        public async Task<JObject> Post([FromBody] JObject value)
+        public async Task<HttpResponseMessage> Delete([FromBody] JObject value)
         {
-            CartDTO cart = JsonConvert.DeserializeObject<CartDTO>(value.ToString());
-            cart = _service.Add(cart);
-            return JObject.FromObject(cart);
-        }
-
-        public async Task<JObject> Put([FromBody] JObject value)
-        {
-            CartDTO cart = JsonConvert.DeserializeObject<CartDTO>(value.ToString());
-            _service.Update(cart);
-            return JObject.FromObject(cart);
-        }
-
-        public async Task Delete([FromBody] JObject value)
-        {
-            CartDTO cart = JsonConvert.DeserializeObject<CartDTO>(value.ToString());
-            _service.Delete(cart);
+            try
+            {
+                CartDTO cart = JsonConvert.DeserializeObject<CartDTO>(value.ToString());
+                _service.Delete(cart);
+                _message = Request.CreateResponse(System.Net.HttpStatusCode.OK);
+            }
+            catch(Exception e)
+            {
+                _message = Request.CreateErrorResponse(System.Net.HttpStatusCode.BadRequest, e);
+            }
+            return _message;
         }
     }
 }
